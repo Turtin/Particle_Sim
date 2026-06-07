@@ -15,7 +15,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         glm
         GIT_REPOSITORY https://github.com/g-truc/glm.git
-        GIT_TAG        1.0.1 # Stable release version
+        GIT_TAG        1.0.1
         GIT_SHALLOW    TRUE
 )
 
@@ -23,7 +23,11 @@ FetchContent_MakeAvailable(glfw glm)
 
 find_package(OpenGL REQUIRED)
 
-add_executable(Particle_Sim main.cpp)
+add_executable(Particle_Sim main.cpp glad.c
+        shaders/LoadShaders.cpp
+        shaders/LoadShaders.h)
+
+target_include_directories(Particle_Sim PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(Particle_Sim
         PRIVATE
@@ -31,3 +35,6 @@ target_link_libraries(Particle_Sim
         glm
         glfw
 )
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/shaders/glsl"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
